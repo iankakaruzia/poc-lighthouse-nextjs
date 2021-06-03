@@ -1,0 +1,23 @@
+---
+kind: pipeline
+type: docker
+name: pull_request
+
+steps:
+  - name: build
+    image: node:14-alpine
+      commands:
+        - npm install
+        - npm run build
+  - name: lint
+    image: node:14-alpine
+    commands:
+      - npm run lint
+    depends_on:
+      - build
+
+trigger:
+  branch:
+    - main
+  event:
+    - pull_request
