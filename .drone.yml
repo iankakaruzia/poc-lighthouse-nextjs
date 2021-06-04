@@ -21,3 +21,52 @@ trigger:
     - main
   event:
     - pull_request
+
+---
+kind: pipeline
+type: docker
+name: deploy
+
+steps:
+  - name: build-prod
+    image: node:14-alpine
+    commands:
+      - npm install
+      - npm run build
+
+  - name: download-serverless-state
+    image: amazon/aws-cli
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: AWS_SECRET_ACCESS_KEY
+    commands:
+      - aws s3 sync s3://serverless-next-aws/.serverless .serverless --delete
+    depends_on:
+      - build-prod
+
+  - name: deploy-to-aws
+    image: node:14-alpine
+    commands:
+      - npx serverless
+    depends_on:
+      - download-serverless-state
+
+  - name: upload-serverless-state
+    image: amazon/aws-cli
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: AWS_SECRET_ACCESS_KEY
+    commands:
+      - aws s3 sync .serverless s3://serverless-next-aws/.serverless --delete
+    depends_on:
+      - deploy-to-aws
+
+trigger:
+  branch:
+    - main
+  event:
+    - push
