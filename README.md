@@ -1,3 +1,5 @@
+[![Build Status](https://cloud.drone.io/api/badges/iankakaruzia/poc-lighthouse-nextjs/status.svg?ref=refs/heads/main)](https://cloud.drone.io/iankakaruzia/poc-lighthouse-nextjs)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
