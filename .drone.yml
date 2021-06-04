@@ -35,14 +35,20 @@ steps:
       - npm run build
 
   - name: download-serverless-state
-    image: amazon/aws-cli
+    image: plugins/s3-sync:1
     environment:
       AWS_ACCESS_KEY_ID:
         from_secret: AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY:
         from_secret: AWS_SECRET_ACCESS_KEY
-    commands:
-      - aws s3 sync s3://serverless-next-aws/.serverless .serverless --delete
+    settings:
+      bucket: poc-lighthouse-serverless
+      access_key: ${AWS_ACCESS_KEY_ID}
+      secret_key: ${AWS_SECRET_ACCESS_KEY}
+      region: us-east-1
+      source: .serverless
+      target: /.serverless
+      delete: true
     depends_on:
       - build-prod
 
