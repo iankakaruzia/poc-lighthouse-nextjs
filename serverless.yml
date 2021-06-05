@@ -1,2 +1,4 @@
 nextServerless:
   component: "@sls-next/serverless-component"
+  input:
+    domain: "ikro.link"
