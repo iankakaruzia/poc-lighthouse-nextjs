@@ -34,42 +34,20 @@ steps:
       - npm install
       - npm run build
 
-  - name: download-serverless-state
-    image: plugins/s3-sync:1
-    environment:
-      AWS_ACCESS_KEY_ID:
-        from_secret: AWS_ACCESS_KEY_ID
-      AWS_SECRET_ACCESS_KEY:
-        from_secret: AWS_SECRET_ACCESS_KEY
-    settings:
-      bucket: poc-lighthouse-serverless
-      access_key: ${AWS_ACCESS_KEY_ID}
-      secret_key: ${AWS_SECRET_ACCESS_KEY}
-      region: us-east-1
-      source: .serverless
-      target: /.serverless
-      delete: true
-    depends_on:
-      - build-prod
-
   - name: deploy-to-aws
     image: node:14-alpine
-    commands:
-      - npx serverless
-    depends_on:
-      - download-serverless-state
-
-  - name: upload-serverless-state
-    image: amazon/aws-cli
     environment:
       AWS_ACCESS_KEY_ID:
         from_secret: AWS_ACCESS_KEY_ID
       AWS_SECRET_ACCESS_KEY:
         from_secret: AWS_SECRET_ACCESS_KEY
     commands:
-      - aws s3 sync .serverless s3://serverless-next-aws/.serverless --delete
+      - npm install -g serverless
+      - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+      - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+      - serverless
     depends_on:
-      - deploy-to-aws
+      - build-prod
 
 trigger:
   branch:
