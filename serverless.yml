@@ -1,5 +1,5 @@
 nextServerless:
   component: "@sls-next/serverless-component"
-  input:
+  inputs:
     cloudfront:
       distributionId: E1N2W0XCBB54FB
