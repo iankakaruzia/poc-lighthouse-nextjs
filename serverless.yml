@@ -1,4 +1,5 @@
 nextServerless:
   component: "@sls-next/serverless-component"
   input:
-    domain: "ikro.link"
+    cloudfront:
+      distributionId: E1N2W0XCBB54FB
