@@ -53,7 +53,7 @@ steps:
     image: cypress/browsers:node14.15.0-chrome86-ff82
     commands:
       - npm install -g @lhci/cli@0.8.x
-      - lhci autorun
+      - lhci autorun || echo "LHCI failed!"
     depends_on:
       - deploy-to-aws
 
