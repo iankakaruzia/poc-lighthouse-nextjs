@@ -4,11 +4,12 @@ module.exports = {
       url: [
         'https://d1f8hajf2xuhxa.cloudfront.net',
         'https://d1f8hajf2xuhxa.cloudfront.net/about'
-      ]
+      ],
+      numberOfRuns: 1
     },
     upload: {
       target: 'filesystem',
-      outputDir: './lhci'
+      outputDir: `./lhci/lighthouse-report-${new Date().toISOString()}`
     }
   }
 }

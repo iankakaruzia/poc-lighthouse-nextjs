@@ -49,13 +49,29 @@ steps:
     depends_on:
       - build-prod
 
-  # - name: lighthouse-ci
-  #   image: node:14-alpine
-  #   commands:
-  #     - npm install -g @lhci/cli@0.8.x
-  #     - lhci autorun
-  #   depends_on:
-  #     - deploy-to-aws
+  - name: lighthouse-ci
+    image: node:14-alpine
+    commands:
+      - npm install -g @lhci/cli@0.8.x
+      - lhci autorun
+    depends_on:
+      - deploy-to-aws
+
+  - name: upload-lighthouse-reports-s3
+    image: amazon/aws-cli
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: AWS_ACCESS_KEY_ID
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: AWS_SECRET_ACCESS_KEY
+      AWS_LIGHTHOUSE_REPORTS_BUCKET_NAME:
+        from_secret: AWS_LIGHTHOUSE_REPORTS_BUCKET_NAME
+      AWS_LIGHTHOUSE_REPORTS_BUCKET_REGION:
+        from_secret: AWS_LIGHTHOUSE_REPORTS_BUCKET_REGION
+    commands:
+      - aws s3 sync lhci s3://$AWS_LIGHTHOUSE_REPORTS_BUCKET_NAME --region $AWS_LIGHTHOUSE_REPORTS_BUCKET_REGION
+    depends_on:
+      - lighthouse-ci
 
 trigger:
   branch:
