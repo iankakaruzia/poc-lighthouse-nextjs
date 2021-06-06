@@ -49,13 +49,13 @@ steps:
     depends_on:
       - build-prod
 
-  - name: lighthouse-ci
-    image: node:14-alpine
-    commands:
-      - npm install -g @lhci/cli@0.8.x
-      - lhci autorun
-    depends_on:
-      - deploy-to-aws
+  # - name: lighthouse-ci
+  #   image: node:14-alpine
+  #   commands:
+  #     - npm install -g @lhci/cli@0.8.x
+  #     - lhci autorun
+  #   depends_on:
+  #     - deploy-to-aws
 
 trigger:
   branch:
