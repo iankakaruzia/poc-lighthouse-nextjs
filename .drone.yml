@@ -50,7 +50,7 @@ steps:
       - build-prod
 
   - name: lighthouse-ci
-    image: node:14-alpine
+    image: cypress/browsers:node14.15.0-chrome86-ff82
     commands:
       - npm install -g @lhci/cli@0.8.x
       - lhci autorun
