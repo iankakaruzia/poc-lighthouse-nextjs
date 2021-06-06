@@ -6,7 +6,7 @@ module.exports = {
         'https://d1f8hajf2xuhxa.cloudfront.net/about'
       ],
       numberOfRuns: 1,
-      settings: { chromeFlags: '--no-sandbox' }
+      settings: { chromeFlags: '--ignore-certificate-errors --no-sandbox' }
     },
     upload: {
       target: 'filesystem',
